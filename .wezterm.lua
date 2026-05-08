@@ -34,7 +34,7 @@ if wezterm.target_triple:find("windows") then
     },
   }
 
-elseif triple:find("darwin") then
+elseif wezterm.target_triple:find("darwin") then
   -- macOS
   config.default_prog = { "/bin/zsh", "-l" }
   config.launch_menu = {
@@ -46,7 +46,7 @@ elseif triple:find("darwin") then
     },
   }
 
-elseif triple:find("linux") then
+elseif wezterm.target_triple:find("linux") then
   -- Linux
   config.default_prog = { "/bin/bash", "-l" }
   config.launch_menu = {
@@ -58,6 +58,7 @@ elseif triple:find("linux") then
   }
 end
 
+config.canonicalize_pasted_newlines = "LineFeed"
 
 
 -- config.ssh_domains = {
@@ -96,7 +97,7 @@ config.keys = {
 -- 새 탭: Ctrl+Shift+T
 {
   key = 'T',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.SpawnTab 'CurrentPaneDomain',
 },
 
@@ -112,60 +113,60 @@ config.keys = {
   action = wezterm.action.ActivateTabRelative(-1),
 },
 
--- 탭 닫기: Ctrl+Shift+W
+-- 탭 닫기
 {
   key = 'W',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.CloseCurrentTab { confirm = true },
 },
 -- 전체화면
 {
   key = 'Enter',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.ToggleFullScreen,
 },
 -- 새창
 {
   key = 'N',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.SpawnWindow,
 },
 -- 탭 이동
-{
-  key = '1',
-  mods = 'CTRL|SHIFT',
-  action = wezterm.action.ActivateTab(0),
-},
-{
-  key = '2',
-  mods = 'CTRL|SHIFT',
-  action = wezterm.action.ActivateTab(1),
-},
-{
-  key = '3',
-  mods = 'CTRL|SHIFT',
-  action = wezterm.action.ActivateTab(2),
-},
-{
-  key = '4',
-  mods = 'CTRL|SHIFT',
-  action = wezterm.action.ActivateTab(3),
-},
+-- {
+--   key = '1',
+--   mods = 'CTRL|SHIFT',
+--   action = wezterm.action.ActivateTab(0),
+-- },
+-- {
+--   key = '2',
+--   mods = 'CTRL|SHIFT',
+--   action = wezterm.action.ActivateTab(1),
+-- },
+-- {
+--   key = '3',
+--   mods = 'CTRL|SHIFT',
+--   action = wezterm.action.ActivateTab(2),
+-- },
+-- {
+--   key = '4',
+--   mods = 'CTRL|SHIFT',
+--   action = wezterm.action.ActivateTab(3),
+-- },
 -- Search
 {
   key = 'F',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.Search 'CurrentSelectionOrEmptyString',
 },
 -- 커맨드 선택
 {
   key = 'P',
-  mods = 'CTRL|SHIFT',
+  mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.ActivateCommandPalette,
 },
 -- 테마 토글
 {
-  key = 'T',
+  key = 'M',
   mods = 'CTRL|SHIFT|ALT',
   action = wezterm.action.EmitEvent 'toggle-theme',
 },
@@ -178,9 +179,41 @@ config.keys = {
 -- Launch menu
   {
     key = "L",
-    mods = "CTRL|SHIFT",
+    mods = "CTRL|SHIFT|ALT",
     action = wezterm.action.ShowLauncher,
   },
+-- Font size: Ctrl + (+/-/0)
+-- (+)는 키보드 레이아웃에 따라 '=' + SHIFT로 들어가는 경우가 많아서 둘 다 넣어둠
+{
+  key = '=',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.IncreaseFontSize,
+},
+{
+  key = '-',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.DecreaseFontSize,
+},
+{
+  key = '+',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.IncreaseFontSize,
+},
+{
+  key = '_',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.DecreaseFontSize,
+},
+{
+  key = '0',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.ResetFontSize,
+},
+{
+  key = ')',
+  mods = 'CTRL|SHIFT|ALT',
+  action = wezterm.action.ResetFontSize,
+},
 }
 
 config.exit_behavior = "Hold"
