@@ -3,6 +3,10 @@
 
 #Include "%A_ScriptDir%\UIA.ahk"
 
+; Per-Monitor DPI Aware v2 — UIA(물리 좌표)와 WinGetPos 좌표계를 통일
+; 이거 없으면 125%/150% 배율에서 GUI 위치와 UIA 좌표가 어긋남
+DllCall("SetThreadDpiAwarenessContext", "ptr", -4, "ptr")
+
 InstallKeybdHook()   ; Win키 같은 걸 더 안정적으로 잡기용 :contentReference[oaicite:1]{index=1}
 #UseHook             ; 필요하면 훅 강제 :contentReference[oaicite:2]{index=2}
 
@@ -21,8 +25,8 @@ global overlay := TaskbarNumberOverlay()
 }
 
 ; 테스트용: 이거 누르면 무조건 뜨게(Win키가 안 잡히는지 확인 가능)
-F12::overlay.Show()
-F12 Up::overlay.Hide()
+; F12::overlay.Show()
+; F12 Up::overlay.Hide()
 
 class TaskbarNumberOverlay {
     __New() {
@@ -67,7 +71,7 @@ class TaskbarNumberOverlay {
             this.labels.Push(this.gui.AddText("Center", ""))
 
         Loop max {
-            dy := -Round(8 * (A_ScreenDPI/96))  ; 숫자만 바꾸면 됨(예: -4, -8)
+            dy := -8  ; 숫자만 바꾸면 됨(예: -4, -8). DPI는 process awareness가 처리
             i := A_Index
             br := btns[i].CurrentBoundingRectangle  ; screen coords {l,t,r,b}
             x := br.l - tbX, y := br.t - tbY + dy
